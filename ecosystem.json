@@ -1,0 +1,10 @@
+{
+  "apps" : [{
+    // Application #1
+    "name"        : "rbytr",
+    "script"      : "server.js",
+    "env"  : {
+      "NODE_ENV": "production"
+    }
+  }]
+}

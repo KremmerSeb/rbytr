@@ -1,0 +1,197 @@
+<section ng-init="find()">
+    <section ng-show="$state.current.name === 'posts.list'" class="post-input-section">
+      <md-content class="list-input">
+      <form name="postForm" novalidate>
+
+        <!-- display post row -->
+        <div class="row list-input-row">
+          <div class="col-xs-8 col-md-10 list-input-col">
+            <md-input-container> <label>Post</label>
+            <textarea name="content" ng-model="content" columns="1"
+              required="" rows="15"></textarea> </md-input-container>
+          </div>
+          <div class="col-xs-4 col-md-2 list-input-col">
+            <div class="list-input-uploader">
+
+              <!-- display file icon as upload button-->
+              <div class="photo-selector list-input-button">
+                <button aria-hidden="true" class="rbytr-button"
+                  type="button" tabindex="-1"
+                  data-original-title="Add photos or video">
+                  <span class="tweet-camera Icon Icon--camera"></span>
+                  <span class="text add-photo-label u-hiddenVisually">
+                    Media </span>
+                </button>
+                <div class="image-selector">
+                  <input type="hidden" name="media_data_empty"
+                    class="file-data" value="">
+                  <div class="multi-photo-data-container hidden"></div>
+                  <label class="t1-label">
+                    <span class="visuallyhidden"> Add media </span>
+                    <input name="files" type="file" class="file-input"
+                      ngf-select ng-model="files" ngf-multiple="true">
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- display uploader queue -->
+        <div class="row list-input-row">
+          <div class="col-xs-12 list-input-col">
+            <div ng-repeat="file in files"
+              class="list-input-file-spacer">
+              <img
+                ngf-size="{width: 100%, height: auto, quality: 0.9}"
+                ng-show="file.$valid" ngf-thumbnail="file"
+                class="thumb">
+              <button ng-click="file = null" ng-show="file">Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- display tasks -->
+        <div class="row list-input-row">
+          <div class="col-xs-8 col-md-10 list-input-col">
+            <div ng-repeat="task in tasks" class="row list-input-row">
+              <div class="col-xs-12 col-md-6 list-input-col">
+                <md-input-container> <label>Target</label>
+                <md-select placeholder="Send to target"
+                  ng-model="task.target" md-on-open="loadTargets()">
+                <md-option ng-repeat="target in task.targets"
+                  ng-value="target">{{target}}</md-option> </md-select> </md-input-container>
+              </div>
+              <div class="col-xs-12 col-md-6 list-input-col">
+                <md-input-container> <input
+                  ng-model="task.datetime" type="datetime-local"
+                  ng-value="task.datetime"> </md-input-container>
+              </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-4 col-md-2 list-input-col">
+            <button class="rbytr-button list-input-button"
+              ng-click="addTask(tasks)">Add task</button>
+          </div>
+        </div>
+
+        <!-- display save button -->
+        <div class="list-input-row">
+          <button class="rbytr-button" type="submit"
+            ng-click="create(postForm.$valid, files)">Save</button>
+        </div>
+
+      </form>
+      </md-content>
+    </section>
+    <div class="list-group">
+      <div ng-repeat="post in posts" class="list-group-item-spacer">
+        
+        <!-- progress bars-->
+        <!-- 
+        <div class="list-group-item-tasks">
+          <md-tooltip md-direction="top">
+            <span ng-repeat="task in post.tasks">
+              <span ng-bind="task.target"></span>:&nbsp;<span ng-bind="task.moment | date:'medium'"></span> 
+            </span>
+          </md-tooltip>
+          <div class="list-group-item-task"
+            ng-repeat="task in post.tasks">
+            <div ng-controller="ProgressController"
+              ng-init="calcProgress(post.created, task.moment)">
+              <md-progress-linear class="md-primary"
+                ng-class="'progress-'+task.target"
+                md-mode="determinate" value="{{progress}}">
+              </md-progress-linear>
+            </div>
+          </div>
+        </div>
+         -->
+         
+        <div class="list-group-item">
+          <div class="post-creator-spacer">
+            <div class="list-group-item-created">
+              <div class="user-profileImage">
+                <a ui-sref="users.view({ userId: post.user._id })">
+                  <img src=""
+                    ng-src="{{post.user.profileImageURL}}"
+                    class="" />
+                </a>
+              </div>
+              <div class="post-origin-spacer">
+                <div class="post-user-displayName">
+                  <a ui-sref="users.view({ userId: post.user._id })" class="" ng-bind="post.user.displayName"></a>
+                </div>
+                <small class="post-created">
+                  <span ng-bind="post.created | date:'mediumDate'"></span>
+                </small>
+              </div>
+            </div>
+            <md-menu class="md-menu list-group-item-menu"> <md-button
+              aria-label="Open phone interactions menu"
+              class="md-icon-button list-group-item-menu-btn"
+              ng-click="openMenu($mdOpenMenu, $event)"> </md-button> <md-menu-content
+              width="3"> <md-menu-item>
+            <md-button disabled="disabled" ng-click="edit()">
+            Edit post </md-button> </md-menu-item> <md-menu-item> <md-button
+              disabled="disabled" ng-click="addTarget()">
+            Add target </md-button> </md-menu-item> <md-menu-item> <md-button
+               ng-disabled="post.user._id !== authentication.user._id" ng-click="remove()"> Remove </md-button> </md-menu-item> <md-menu-item>
+            <md-button disabled="disabled" ng-click="copy()">
+            Copy </md-button> </md-menu-item> </md-menu-content> </md-menu>
+          </div>
+          <div class="post-content" ng-bind-html="post.content"></div>
+<!--           display task -->
+<!--           <div class="" ng-repeat="task in post.tasks"> -->
+<!--             <span ng-bind="task.target"></span>:&nbsp;<span style="background-color:rgba(100,100,200,0.4);" ng-bind="task.moment | date:'medium'"></span> -->
+<!--           </div> -->
+<!--           display task -->
+          <div ng-repeat="file in post.files">
+            <img src="" ng-src="{{file.location}}"
+              class="post-file-image" />
+          </div>
+          <div class="post-engage-spacer">
+            <div class="post-like-spacer">
+              <span ng-if="post.likes | contains:authentication.user._id" 
+                    ng-click="likePost(post)" style="color:blue;">
+                like
+              </span>
+              <span ng-if="!(post.likes | contains:authentication.user._id)" 
+                    ng-click="unlikePost(post)" style="color:red;">
+                unlike
+              </span>
+              (
+              <span ng-bind="post.likes.length"></span>
+              )
+            </div>
+            <div class="post-share-spacer">
+              <span ng-if="post.shares | contains:authentication.user._id" 
+                    ng-click="sharePost(post)" style="color:blue;">
+                share
+              </span>
+              <span ng-if="!(post.shares | contains:authentication.user._id)" 
+                    ng-click="unsharePost(post)" style="color:red;">
+                unshare
+              </span>
+              (
+              <span ng-bind="post.shares.length"></span>
+              )
+            </div>
+            <div class="post-comment-spacer">
+              <span ng-click="comment()">comment</span>
+              (
+              <span>0</span>
+              )
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-warning text-center"
+        ng-if="posts.$resolved && !posts.length">
+        No posts yet, why don't you
+        <a ui-sref="posts.list">create one</a>
+        ?
+      </div>
+    </div>
+</section>

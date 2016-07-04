@@ -1,0 +1,28 @@
+<section ng-controller="PostsController" ng-init="findOne()">
+  <div class="page-header">
+    <h1 ng-bind="post.title"></h1>
+  </div>
+  <div class="pull-right" ng-show="authentication.user._id == post.user._id">
+    <a class="btn btn-primary" ui-sref="posts.edit({postId: post._id})">
+      <i class="glyphicon glyphicon-edit"></i>
+    </a>
+    <a class="btn btn-primary" ng-click="remove();">
+      <i class="glyphicon glyphicon-trash"></i>
+    </a>
+  </div>
+  <small>
+    <em class="text-muted">
+      Posted on
+      <span ng-bind="post.created | date:'mediumDate'"></span>
+      by
+      <span ng-bind="post.user.displayName"></span>
+    </em>
+  </small>
+  <p class="lead" ng-bind="post.content"></p>
+  <div class="" ng-repeat="task in post.tasks">
+    <small ng-bind="task.target"></small>
+    <small ng-bind="task.date"></small>
+    <small ng-bind="task.time"></small>,
+    <small ng-bind="task.moment"></small>
+  </div>
+</section>

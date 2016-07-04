@@ -1,0 +1,36 @@
+<section ng-controller="SettingsController">
+  <div class="page-header">
+    <h1>Settings</h1>
+  </div>
+  <h1 class="authTitle">
+    <span ng-if="$state.current.name === 'settings.profile'">Edit profile</span>
+    <span ng-if="$state.current.name === 'settings.picture'">Change profile picture</span>
+    <span ng-if="$state.current.name === 'settings.password'">Change password</span>
+    <span ng-if="$state.current.name === 'settings.accounts'">Add or remove accounts</span>
+    <span ng-if="$state.current.name === 'settings.invite'">Invite</span>
+  </h1>
+  <div class="row">
+    <nav class="col-sm-3 col-md-3">
+      <ul class="nav nav-pills nav-stacked">
+        <li ui-sref-active="active">
+          <a ui-sref="settings.profile">Edit Profile</a>
+        </li>
+        <li ui-sref-active="active">
+          <a ui-sref="settings.picture">Change Profile Picture</a>
+        </li>
+        <li ui-sref-active="active" ng-show="user.provider === 'local'">
+          <a ui-sref="settings.password">Change Password</a>
+        </li>
+        <li ui-sref-active="active">
+          <a ui-sref="settings.accounts">Manage Social Accounts</a>
+        </li>
+        <li ui-sref-active="active">
+          <a ui-sref="settings.invite">Invite</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="col-sm-9 col-md-8 settings-view">
+      <div ui-view></div>
+    </div>
+  </div>
+</section>

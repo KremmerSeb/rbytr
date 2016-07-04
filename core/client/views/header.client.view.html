@@ -1,0 +1,62 @@
+<div ng-controller="HeaderController">
+	<header id="menu-bar" class="undefined">
+	  <nav id="nav-bar">
+	    <a href="#nav-drawer" title="Menu" class="menu-btn">Menu</a>
+          <a ui-sref="home"  title="rbytr" class="rbytr-btn">rbytr</a>
+	  </nav>
+	</header>
+	<nav id="off-canvas-menu">
+	  <div class="off-canvas-inner">
+	    <ul class="nav navbar-nav" ng-if="menu.shouldRender(authentication.user);">
+	      <li ng-repeat="item in menu.items | orderBy: 'position'" ng-if="item.shouldRender(authentication.user);" ng-switch="item.type" ng-class="{ active: $state.includes(item.state), dropdown: item.type === 'dropdown' }" class="{{item.class}}">
+	        <h4>{{::item.title}}</h4>
+	        <ul ng-switch-when="dropdown">
+	          <li ng-repeat="subitem in item.items | orderBy: 'position'" ng-if="subitem.shouldRender(authentication.user);" ui-sref-active="active">
+	            <a ui-sref="{{subitem.state}}" ng-bind="subitem.title" ng-click="closeNav()"></a>
+	          </li>
+	        </ul>
+	        <a ng-switch-default ui-sref="{{item.state}}" ng-bind="item.title"></a>
+	      </li>
+	    </ul>
+	    <ul class="nav navbar-nav" ng-hide="authentication.user">
+	      <li class="dropdown" dropdown>
+	        <h4>Hello</h4>
+	        <ul role="menu">
+		      <li ui-sref-active="active">
+		        <a ui-sref="authentication.invite" ng-click="closeNav()">Request invite</a>
+                <a ui-sref="authentication.signin" ng-click="closeNav()">Sign in</a>
+                <a ui-sref="imprint" ng-click="closeNav()">Imprint</a>
+		      </li>
+	        </ul>
+          </li>
+	    </ul>
+	    <ul class="nav navbar-nav" ng-show="authentication.user">
+	      <li class="dropdown" dropdown>
+	        <h4>{{authentication.user.displayName}}</h4>
+	        <ul role="menu">
+	          <li ui-sref-active="active">
+	            <a ui-sref="settings.profile" ng-click="closeNav()">Edit Profile</a>
+	          </li>
+	          <li ui-sref-active="active">
+	            <a ui-sref="settings.picture" ng-click="closeNav()">Change Profile Picture</a>
+	          </li>
+	          <li ui-sref-active="active" ng-show="authentication.user.provider === 'local'">
+	            <a ui-sref="settings.password" ng-click="closeNav()">Change Password</a>
+	          </li>
+	          <li ui-sref-active="active">
+	            <a ui-sref="settings.accounts" ng-click="closeNav()">Manage Social Accounts</a>
+	          </li>
+              <li ui-sref-active="active">
+                <a ui-sref="settings.invite" ng-click="closeNav()">Invite</a>
+              </li>
+	          <li class="divider"></li>
+	          <li>
+	            <a href="/api/auth/signout" target="_self" ng-click="closeNav()">Signout</a>
+	          </li>
+	        </ul>
+	      </li>
+      </ul>
+	  </div>
+	</nav>
+</div>
+<div id="content-cloak"></div>

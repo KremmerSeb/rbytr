@@ -1,0 +1,85 @@
+<section class="auth" ng-controller="AuthenticationController">
+  <div class="row">
+    <h1 class="authTitle">
+      <span ng-if="$state.current.name === 'authentication.signup'">Sign Up</span>
+      <span ng-if="$state.current.name === 'authentication.signin'">Sign In</span>
+      <span ng-if="$state.current.name === 'authentication.invite'">Request invite</span>
+    </h1>
+  </div>
+  <div class="row list-input auth"> 
+    <div ui-view></div>
+    <div class="col-xs-12 col-md-6" ng-if="$state.current.name === 'authentication.signup' || $state.current.name === 'authentication.signin'">
+      <!-- Login with passport -->
+      <div>
+        <div>
+          <a ng-click="callOauthProvider('/api/auth/twitter')">
+            <div class="social_button social_button_twitter">
+              <i class="fontello-twitter social_button_icon"></i>
+              <span class="social_button_text">Sign
+                <span ng-if="$state.current.name === 'authentication.signup'">up</span>
+                <span ng-if="$state.current.name === 'authentication.signin'">in</span>
+                with Twitter</span>
+            </div>
+          </a>
+        </div>
+        <div>
+          <a ng-click="callOauthProvider('/api/auth/linkedin')">
+            <div class="social_button social_button_linkedin">
+              <i class="fontello-linkedin social_button_icon"></i>
+              <span class="social_button_text">Sign
+                <span ng-if="$state.current.name === 'authentication.signup'">up</span>
+                <span ng-if="$state.current.name === 'authentication.signin'">in</span>
+                with Linkedin</span>
+            </div>
+          </a>
+        </div>
+        <!--
+        <div>
+          <a ng-click="callOauthProvider('/api/auth/tumblr')">
+            <div class="social_button social_button_tumblr">
+              <i class="fontello-tumblr social_button_icon"></i>
+              <span class="social_button_text">Sign
+                <span ng-if="$state.current.name === 'authentication.signup'">up</span>
+                <span ng-if="$state.current.name === 'authentication.signin'">in</span>
+                with Tumblr</span>
+            </div>
+          </a>
+        </div>
+        <div>
+          <a ng-click="callOauthProvider('/api/auth/facebook')">
+            <div class="social_button social_button_facebook">
+              <i class="fontello-facebook social_button_icon"></i>
+              <span class="social_button_text">Sign
+                <span ng-if="$state.current.name === 'authentication.signup'">up</span>
+                <span ng-if="$state.current.name === 'authentication.signin'">in</span>
+                with Facebook</span>
+            </div>
+          </a>
+        </div>
+        <div>
+          <a ng-click="callOauthProvider('/api/auth/soundcloud')">
+            <div class="social_button social_button_soundcloud">
+              <i class="fontello-soundcloud social_button_icon"></i>
+              <span class="social_button_text">Sign
+                <span ng-if="$state.current.name === 'authentication.signup'">up</span>
+                <span ng-if="$state.current.name === 'authentication.signin'">in</span>
+                with Soundcloud</span>
+            </div>
+          </a>
+        </div>
+        -->
+        <div>
+          <a ng-click="callOauthProvider('/api/auth/googleplus')">
+            <div class="social_button social_button_gplus">
+              <i class="fontello-gplus social_button_icon"></i>
+              <span class="social_button_text">Sign
+                <span ng-if="$state.current.name === 'authentication.signup'">up</span>
+                <span ng-if="$state.current.name === 'authentication.signin'">in</span>
+                with Google</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
